@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {csv} from 'd3-request';
 import './App.css';
-// import Scatterplot from './scatterplot';
+import Scatterplot from './scatterplot';
 
 class App extends Component {
   constructor(props) {
