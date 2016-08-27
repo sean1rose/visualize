@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {csv} from 'd3-request';
-import logo from './logo.svg';
 import './App.css';
+// import Scatterplot from './scatterplot';
 
 class App extends Component {
   constructor(props) {
@@ -9,19 +9,36 @@ class App extends Component {
     this.state = {};
   }
   componentWillMount() {
+    // state is still empty when componentWillMount attempts to load the file
     csv('./data/birthdeathrates.csv', (error, data) => {
       if (error) {
         this.setState({loadError: true});
       }
+      // if the data successfully loads -> the component will rerender
       this.setState({
         data: data.map(d => ({...d, x: Number(d.birth), y: Number(d.death)}))
       });
     })
   }
   render() {
-    return (
-      <div></div>
-    )
+    if (this.state.loadError){
+      return <div>Couldn't load file</div>
+    }
+    if (!this.state.data){
+      return <div />;
+    }
+    return <div style={{
+      background: '#fff',
+      borderRadius: '3px',
+      boxShadow: '0 1 2 0 rgba(0,0,0,0.1)',
+      margin: 12,
+      padding: 24,
+      width: '350px'
+    }}>
+      <h1>Birth and death rates of selected countries</h1>
+      <h2>per 1000 inhabitants</h2>
+      <Scatterplot data={this.state.data}/>
+    </div>;
   }
 }
 
